@@ -59,6 +59,7 @@ steps:
   #   image: curlimages/curl
   #   commands:
   #     - "curl -X GET 'http://84.247.167.129:8080/v1/update' -H 'Authorization: Bearer mytoken'" # Must match the token defined in docker-compose.yml
+  #     - sleep 10
   #   depends_on:
   #     - publish api
   #     - publish web
@@ -71,3 +72,9 @@ steps:
           -user=myuser
           -password=mypassword
           -locations=filesystem:./db/sql
+
+  - name: performance tests
+    image: grafana/k6
+    commands:
+      - k6 run ./tests/performance/spike.js
+
