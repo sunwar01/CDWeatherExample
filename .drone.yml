@@ -29,36 +29,45 @@ depends_on:
   - integration
 
 steps:
-  - name: publish api
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: DockerUsername
-      password:
-        from_secret: DockerPassword
-      context: src
-      dockerfile: src/WeatherAPI/Dockerfile
-      repo: boulundeasv/cd-weather-api
-      tags: 
-        - staging
+  # - name: publish api
+  #   image: plugins/docker
+  #   settings:
+  #     username:
+  #       from_secret: DockerUsername
+  #     password:
+  #       from_secret: DockerPassword
+  #     context: src
+  #     dockerfile: src/WeatherAPI/Dockerfile
+  #     repo: boulundeasv/cd-weather-api
+  #     tags: 
+  #       - staging
 
-  - name: publish web
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: DockerUsername
-      password:
-        from_secret: DockerPassword
-      context: src
-      dockerfile: src/WeatherFrontend/Dockerfile
-      repo: boulundeasv/cd-weather-web
-      tags: 
-        - staging
+  # - name: publish web
+  #   image: plugins/docker
+  #   settings:
+  #     username:
+  #       from_secret: DockerUsername
+  #     password:
+  #       from_secret: DockerPassword
+  #     context: src
+  #     dockerfile: src/WeatherFrontend/Dockerfile
+  #     repo: boulundeasv/cd-weather-web
+  #     tags: 
+  #       - staging
 
-  - name: trigger update
-    image: curlimages/curl
+  # - name: trigger update
+  #   image: curlimages/curl
+  #   commands:
+  #     - "curl -X GET 'http://84.247.167.129:8080/v1/update' -H 'Authorization: Bearer mytoken'" # Must match the token defined in docker-compose.yml
+  #   depends_on:
+  #     - publish api
+  #     - publish web
+
+  - name: update database
+    image: flyway/flyway
     commands:
-      - "curl -X GET 'http://84.247.167.129:8080/v1/update' -H 'Authorization: Bearer mytoken'" # Must match the token defined in docker-compose.yml
-    depends_on:
-      - publish api
-      - publish web
+      - flyway 
+          -url=jdbc:mariadb://84.247.167.129:3306/forecasts
+          -user=myuser
+          -password=mypassword
+          -locations=filesystem:./db/sql
