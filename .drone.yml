@@ -37,10 +37,11 @@ steps:
       DOCKERPASSWORD:
         from_secret: DockerPassword
       context: src
-      dockerfile: WeatherAPI/Dockerfile
+      dockerfile: src/WeatherAPI/Dockerfile
       repo: $DOCKERUSERNAME/cd-weather-api
       tags: 
         - staging
+
   - name: publish web
     image: plugins/docker
     settings:
@@ -49,10 +50,11 @@ steps:
       DOCKERPASSWORD:
         from_secret: DockerPassword
       context: src
-      dockerfile: WeatherFrontend/Dockerfile
+      dockerfile: src/WeatherFrontend/Dockerfile
       repo: $DOCKERUSERNAME/cd-weather-web
       tags: 
         - staging
+
   - name: wait
     image: alpine
     commands:
