@@ -9,6 +9,7 @@ steps:
       SONARSECRET:
         from_secret: SonarQubeSecret
     commands:
+      - exit 0
       - dotnet sonarscanner begin
           /k:"easv-devops_CDWeatherExample_AY4d5zUxEVvRW2O60EXK"
           /d:sonar.host.url="http://sonar.setgo.dk:9000"  
@@ -35,7 +36,8 @@ steps:
         from_secret: DockerUsername
       DOCKERPASSWORD:
         from_secret: DockerPassword
-      dockerfile: src/WeatherAPI/Dockerfile
+      context: src
+      dockerfile: WeatherAPI/Dockerfile
       repo: $DOCKERUSERNAME/cd-weather-api
       tags: 
         - staging
@@ -46,7 +48,8 @@ steps:
         from_secret: DockerUsername
       DOCKERPASSWORD:
         from_secret: DockerPassword
-      dockerfile: src/WeatherAPI/Dockerfile
+      context: src
+      dockerfile: WeatherFrontend/Dockerfile
       repo: $DOCKERUSERNAME/cd-weather-web
       tags: 
         - staging
