@@ -66,7 +66,7 @@ steps:
   - name: update database
     image: flyway/flyway
     commands:
-      - flyway 
+      - flyway migrate
           -url=jdbc:mariadb://84.247.167.129:3306/forecasts
           -user=myuser
           -password=mypassword
