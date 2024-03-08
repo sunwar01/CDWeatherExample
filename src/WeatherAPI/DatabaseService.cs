@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using MySqlConnector;
 using Dapper;
 using Models;
