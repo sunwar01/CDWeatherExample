@@ -32,5 +32,5 @@ export let options = {
 };
 
 export default function () {
-    http.get('https://test.k6.io');
+    http.get("http://84.247.167.129:5002/weatherforecast");
 }
