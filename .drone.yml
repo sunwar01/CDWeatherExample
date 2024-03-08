@@ -84,6 +84,7 @@ steps:
       - testcafe chromium:headless test/e2e/count-forecasts.js
 
   - name: gather processes
+    image: alpine
     commands: 
       - sleep 1
     depends_on:
