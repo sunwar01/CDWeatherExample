@@ -32,9 +32,9 @@ steps:
   - name: publish api
     image: plugins/docker
     settings:
-      DOCKERUSERNAME:
+      username:
         from_secret: DockerUsername
-      DOCKERPASSWORD:
+      password:
         from_secret: DockerPassword
       context: src
       dockerfile: src/WeatherAPI/Dockerfile
@@ -43,19 +43,6 @@ steps:
         - staging
 
   - name: publish web
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: DockerUsername
-      password:
-        from_secret: DockerPassword
-      context: src
-      dockerfile: src/WeatherFrontend/Dockerfile
-      repo: boulundeasv/cd-weather-web
-      tags: 
-        - staging
-
-  - name: publish
     image: plugins/docker
     settings:
       username:
