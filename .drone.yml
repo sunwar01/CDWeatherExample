@@ -51,6 +51,9 @@ steps:
       tags: 
         - staging
   - name: wait
+    image: alpine
+    commands:
+      - sleep 10
     depends_on:
       - publish api
       - publish web
