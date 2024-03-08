@@ -56,7 +56,7 @@ steps:
         - staging
 
   - name: trigger update
-    image: alpine
+    image: curlimages/curl
     commands:
       - "curl -X GET 'http://84.247.167.129:8080/v1/update' -H 'Authorization: Bearer mytoken'" # Must match the token defined in docker-compose.yml
     depends_on:
