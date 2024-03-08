@@ -31,6 +31,9 @@ depends_on:
 steps:
   - name: publish api
     image: plugins/docker
+    environment:
+      DOCKERUSERNAME:
+        from_secret: DockerUsername
     settings:
       DOCKERUSERNAME:
         from_secret: DockerUsername
@@ -38,12 +41,15 @@ steps:
         from_secret: DockerPassword
       context: src
       dockerfile: src/WeatherAPI/Dockerfile
-      repo: ${DOCKERUSERNAME}/cd-weather-api
+      repo: $DOCKERUSERNAME/cd-weather-api
       tags: 
         - staging
 
   - name: publish web
     image: plugins/docker
+    environment:
+      DOCKERUSERNAME:
+        from_secret: DockerUsername
     settings:
       DOCKERUSERNAME:
         from_secret: DockerUsername
@@ -51,7 +57,7 @@ steps:
         from_secret: DockerPassword
       context: src
       dockerfile: src/WeatherFrontend/Dockerfile
-      repo: ${DOCKERUSERNAME}/cd-weather-web
+      repo: $DOCKERUSERNAME/cd-weather-web
       tags: 
         - staging
 
