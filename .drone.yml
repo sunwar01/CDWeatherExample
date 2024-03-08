@@ -55,10 +55,10 @@ steps:
       tags: 
         - staging
 
-  - name: wait
+  - name: trigger update
     image: alpine
     commands:
-      - sleep 10
+      - curl -X GET "http://84.247.167.129:8080/v1/update" -H "Authorization: Bearer mytoken" # Must match the token defined in docker-compose.yml
     depends_on:
       - publish api
       - publish web
