@@ -64,16 +64,27 @@ steps:
   #     - publish api
   #     - publish web
 
-  - name: update database
-    image: flyway/flyway
-    commands:
-      - flyway migrate
-          -url=jdbc:mariadb://84.247.167.129:3306/forecasts
-          -user=myuser
-          -password=mypassword
-          -locations=filesystem:./db/sql
+  # - name: update database
+  #   image: flyway/flyway
+  #   commands:
+  #     - flyway migrate
+  #         -url=jdbc:mariadb://84.247.167.129:3306/forecasts
+  #         -user=myuser
+  #         -password=mypassword
+  #         -locations=filesystem:./db/sql
 
   - name: performance tests
     image: grafana/k6
     commands:
       - k6 run test/performance/spike.js
+
+  - name: end-to-end tests
+    image: testcafe/testcafe
+    commands:
+      - testcafe chromium:headless test/e2e/count-forecasts.js
+
+  - name: gather processes
+    command: sleep 1
+    depends_on:
+      - performance tests
+      - end-to-end tests
