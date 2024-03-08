@@ -18,3 +18,39 @@ steps:
       - dotnet build --no-incremental
       - dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
       - dotnet sonarscanner end /d:sonar.token="$SONARSECRET"
+
+---
+
+kind: pipeline
+type: docker
+name: deliver
+depends_on:
+  - integration
+
+steps:
+  - name: publish api
+    image: plugins/docker
+    settings:
+      DOCKERUSERNAME:
+        from_secret: DockerUsername
+      DOCKERPASSWORD:
+        from_secret: DockerPassword
+      dockerfile: src/WeatherAPI/Dockerfile
+      repo: $DOCKERUSERNAME/cd-weather-api
+      tags: 
+        - staging
+  - name: publish web
+    image: plugins/docker
+    settings:
+      DOCKERUSERNAME:
+        from_secret: DockerUsername
+      DOCKERPASSWORD:
+        from_secret: DockerPassword
+      dockerfile: src/WeatherAPI/Dockerfile
+      repo: $DOCKERUSERNAME/cd-weather-web
+      tags: 
+        - staging
+  - name: wait
+    depends_on:
+      - publish api
+      - publish web
