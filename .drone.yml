@@ -84,7 +84,8 @@ steps:
       - testcafe chromium:headless test/e2e/count-forecasts.js
 
   - name: gather processes
-    command: sleep 1
+    commands: 
+      - sleep 1
     depends_on:
       - performance tests
       - end-to-end tests
